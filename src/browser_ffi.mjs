@@ -1,6 +1,16 @@
 import { loremIpsum } from "https://esm.sh/lorem-ipsum@3";
 import { Result$Ok, Result$Error } from "./gleam.mjs";
 
+export function onResize(dispatch) {
+  window.addEventListener("resize", () => {
+    dispatch(window.innerWidth)
+  })
+}
+
+export function getWindowWidth() {
+  return window.innerWidth
+}
+
 /// Lorem ipsium generator
 export function loremIpsumGleam(count, units) {
   return loremIpsum({count, units})

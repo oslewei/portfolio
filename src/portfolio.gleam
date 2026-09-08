@@ -1,6 +1,5 @@
 import about
 import contact
-import gleam/uri
 import grille_pain
 import grille_pain/lustre/toast
 import home
@@ -20,7 +19,8 @@ import styles
 
 import shared.{
   type Model, type Msg, Dark, Light, Model, System, SystemThemeChanged,
-  UserPressedEmail, UserToggledColourMode,
+  UserClosedHamburger, UserOpenedHamburger, UserPressedEmail, UserResizedWindow,
+  UserToggledColourMode,
 }
 
 fn watch_scheme() -> Effect(Msg) {
@@ -30,12 +30,27 @@ fn watch_scheme() -> Effect(Msg) {
   })
 }
 
+@external(javascript, "./browser_ffi.mjs", "onResize")
+fn on_resize(dispatch: fn(Int) -> Nil) -> Nil
+
+@external(javascript, "./browser_ffi.mjs", "getWindowWidth")
+fn get_window_width() -> Int
+
 fn init(_) -> #(Model, Effect(Msg)) {
+  let width = get_window_width()
   #(
     // Change to user preference? 
-    Model(System(styles.prefers_dark())),
+    Model(
+      window_width: width,
+      hamburger_is_open: False,
+      colour_mode: System(styles.prefers_dark()),
+    ),
     effect.batch([
       watch_scheme(),
+      effect.from(fn(dispatch) {
+        use w <- on_resize
+        dispatch(UserResizedWindow(w))
+      }),
     ]),
   )
 }
@@ -43,7 +58,7 @@ fn init(_) -> #(Model, Effect(Msg)) {
 fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
   case msg {
     UserToggledColourMode -> #(
-      Model(colour_mode: case model.colour_mode {
+      Model(..model, colour_mode: case model.colour_mode {
         Light | System(False) -> {
           styles.set_attribute("data-theme", "dark")
           Dark
@@ -55,11 +70,28 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
       }),
       effect.none(),
     )
+    SystemThemeChanged(is_dark:) -> #(
+      Model(..model, colour_mode: case is_dark {
+        True -> Dark
+        False -> Light
+      }),
+      effect.none(),
+    )
     UserPressedEmail -> {
       contact.write_text("oslewei.proton.me")
       #(model, toast.toast("Copied Email!"))
     }
-    _ -> panic as "what the fuck"
+    UserResizedWindow(window_width) -> {
+      #(Model(..model, window_width:), effect.none())
+    }
+    UserOpenedHamburger -> #(
+      Model(..model, hamburger_is_open: True),
+      effect.none(),
+    )
+    UserClosedHamburger -> #(
+      Model(..model, hamburger_is_open: False),
+      effect.none(),
+    )
   }
 }
 
@@ -73,32 +105,72 @@ fn light_mode_button(model: Model) -> Element(Msg) {
 }
 
 fn navbar(model: Model) -> Element(Msg) {
-  html.nav(
-    css.class([
-      css.width(length.vw(100)),
-      css.display("flex"),
-      css.flex_direction("row"),
-      css.justify_content("space-between"),
-      css.align_items("center"),
-      css.position("sticky"),
-      css.top(length.px(0)),
-      css.z_index(100),
-      css.background(styles.background_color),
-      css.border_bottom("solid 1px black"),
+  let nav_content = [
+    html.a(styles.button(), [attribute.href("#home")], [html.text("home")]),
+    html.a(styles.button(), [attribute.href("#projects")], [
+      html.text("projects"),
     ]),
-    [],
-    [
-      html.a(styles.button(), [attribute.href("#home")], [html.text("home")]),
-      html.a(styles.button(), [attribute.href("#projects")], [
-        html.text("projects"),
-      ]),
-      html.a(styles.button(), [attribute.href("#about")], [html.text("about")]),
-      html.a(styles.button(), [attribute.href("#contact")], [
-        html.text("contact"),
-      ]),
-      light_mode_button(model),
-    ],
-  )
+    html.a(styles.button(), [attribute.href("#about")], [html.text("about")]),
+    html.a(styles.button(), [attribute.href("#contact")], [
+      html.text("contact"),
+    ]),
+    light_mode_button(model),
+  ]
+
+  html.nav(css.class([
+    css.z_index(100),
+    css.position("sticky"),
+    css.top(length.px(0)),
+    css.border_bottom("solid 1px black"),
+    css.background(styles.var_bg_color),
+  ]), [], [
+    case model.window_width > 500 {
+      True ->
+        html.div(
+          css.class([
+            css.width(length.vw(100)),
+            css.display("flex"),
+            css.flex_direction("row"),
+            css.justify_content("space-between"),
+            css.align_items("center"),
+          ]),
+          [],
+          nav_content,
+        )
+      False ->
+        case model.hamburger_is_open {
+          False ->
+            html.button_([event.on_click(UserOpenedHamburger)], [
+              lucide_lustre.hamburger([]),
+            ])
+
+          True ->
+            html.div(css.class([css.z_index(100)]),
+              [], [
+              html.div(
+                css.class([
+                  css.position("fixed"),
+                  css.inset("0"),
+                  css.background("transparent"),
+                  css.z_index(10),
+                ]),
+                [event.on_click(UserClosedHamburger)],
+                [],
+              ),
+              html.div(
+                css.class([
+                  css.position("relative"),
+                  css.display("flex"),
+                  css.flex_direction("column"),
+                  css.z_index(20),
+                ]),
+                [],
+                nav_content,
+              ),
+            ])
+        }
+    },
+  ])
 }
 
 fn view(model: Model, stylesheet: sketch.StyleSheet) -> Element(Msg) {

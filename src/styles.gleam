@@ -15,16 +15,22 @@ pub fn prefers_dark() -> Bool
 @external(javascript, "./browser_ffi.mjs", "onSchemeChange")
 pub fn on_scheme_change(callback: fn(Bool) -> Nil) -> Nil
 
-pub const background_color = "#FAF9F6"
+pub const color = "#FAF9F6"
 
-pub const dark_background_color = "#1A1A18"
+pub const dark_color = "#1A1A18"
+
+pub const var_bg_color = "var(--bg-color)"
+
+pub const var_fg_color = "var(--fg-color)"
 
 pub fn section() -> css.Class {
   css.class([
     css.display("flex"),
     css.flex_direction("column"),
+    css.justify_content("center"),
     css.align_items("center"),
-    css.border("solid 1px black")
+    css.border("solid 1px black"),
+    css.height(length.vh(100)),
   ])
 }
 
@@ -55,32 +61,35 @@ pub fn global(stylesheet: sketch.StyleSheet) -> sketch.StyleSheet {
     css.global(":root", [
       css.font_family("\"IBM Plex Sans\", sans-serif"),
       css.scroll_behavior("smooth"),
-      css.background_color(background_color),
+      css.background_color(color),
       css.media(media.dark_theme(), [
-        css.background_color(dark_background_color),
+        css.background_color(dark_color),
       ]),
+
+      css.property("--bg-color", color),
+      css.property("--fg-color", dark_color),
+
+      css.background_color(var_bg_color),
+      css.color(var_fg_color)
     ]),
   )
-  |> sketch.global(css.global("body", [
-    css.overflow_x("hidden"),
-    css.margin(zero()),
-    css.padding(zero()),
-  ]))
+  |> sketch.global(
+    css.global("body", [
+      css.overflow_x("hidden"),
+      css.margin(zero()),
+      css.padding(zero()),
+    ]),
+  )
   |> sketch.global(
     css.global("[data-theme=\"dark\"]", [
-      css.background_color(dark_background_color),
+      css.property("--bg-color", dark_color),
+      css.property("--fg-color", color),
     ]),
   )
   |> sketch.global(
     css.global("[data-theme=\"light\"]", [
-      css.background_color(background_color),
-    ]),
-  )
-  |> sketch.global(
-    css.global("section", [
-      css.height(length.vh(100)),
-      css.display("flex"),
-      css.justify_content("center"),
+      css.property("--bg-color", color),
+      css.property("--fg-color", dark_color),
     ]),
   )
 }

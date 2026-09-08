@@ -8,13 +8,22 @@ pub type ColourMode {
 }
 
 pub type Model {
-  Model(colour_mode: ColourMode)
+  Model(
+    // TODO: fix this, I want to use types to make hamburger is open only work then
+    // because the hamburger sholdnt even bw therer wthout
+    hamburger_is_open: Bool,
+    window_width: Int,
+    colour_mode: ColourMode,
+  )
 }
 
 pub type Msg {
+  UserResizedWindow(width: Int)
   UserToggledColourMode
   UserPressedEmail
   SystemThemeChanged(is_dark: Bool)
+  UserOpenedHamburger
+  UserClosedHamburger
 }
 
 pub fn zero() {

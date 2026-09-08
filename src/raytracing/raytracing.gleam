@@ -1,10 +1,10 @@
-import sketch/lustre/element/html
-import sketch
-import lustre/effect.{type Effect}
-import styles
 import lustre
+import lustre/effect.{type Effect}
 import lustre/element.{type Element}
+import sketch
 import sketch/lustre as sketch_lustre
+import sketch/lustre/element/html
+import styles
 
 pub type Model {
   Model

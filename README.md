@@ -6,6 +6,8 @@ I want a marker rendering aesthetic
 
 consider rough.js for this, and some diagrams
 
+maybe make it into a more static site like gleam.run, because I am not fully using the spa features
+
 # Design
 
 - using lucide for  icons and such
