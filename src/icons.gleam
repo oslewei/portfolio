@@ -7,6 +7,7 @@ fn icon(attributes: List(Attribute(msg)), svg_string: String) -> Element(msg) {
   html.svg(attributes, [svg.path([attribute.attribute("d", svg_string)])])
 }
 
+// not great, either just  get the gitjhub log directly, or reimplement simple icons in lustre
 pub fn github() {
   icon(
     [],

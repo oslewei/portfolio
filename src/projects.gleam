@@ -1,6 +1,5 @@
 import lustre/attribute
 import lustre/element.{type Element}
-import shared
 import sketch/css
 import sketch/css/length
 import sketch/lustre/element/html

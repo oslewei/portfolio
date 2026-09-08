@@ -16,11 +16,9 @@ pub fn prefers_dark() -> Bool
 pub fn on_scheme_change(callback: fn(Bool) -> Nil) -> Nil
 
 pub const color = "#FAF9F6"
-
 pub const dark_color = "#1A1A18"
 
 pub const var_bg_color = "var(--bg-color)"
-
 pub const var_fg_color = "var(--fg-color)"
 
 pub fn section() -> css.Class {

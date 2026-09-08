@@ -1,7 +1,5 @@
 import lustre/attribute
 import lustre/element.{type Element}
-import sketch/css
-import sketch/css/length
 import sketch/lustre/element/html
 import styles
 

@@ -8,9 +8,12 @@ consider rough.js for this, and some diagrams
 
 maybe make it into a more static site like gleam.run, because I am not fully using the spa features
 
+maybe reimplement simple icons in lustre
+
 # Design
 
-- using lucide for  icons and such
+- using lucide for icons and such
+- sketch_lustre for css in lustre for fun
 
 # Pages
 
@@ -29,6 +32,6 @@ Preferably small like preview andd then a page later
 
 # TODO
 
-- [ ] Switch to vite and vite-gleam
-- [ ] Fix the directories, just a pure dist doesnt work great
+- [x] Switch to vite and vite-gleam
+- [x] Fix the directories, just a pure dist doesnt work great
 - [ ] Move to static later at some point, static mpa with dynamic islands would be nice
