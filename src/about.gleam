@@ -16,7 +16,7 @@ pub fn view() -> List(Element(message)) {
       styles.button(),
       [
         attribute.download("OscarWeimannCV.pdf"),
-        attribute.href("OscarWeimannCV.pdf"),
+        attribute.href("https://github.com/oslewei/cv/releases/download/latest/OscarWeimannCV.pdf"),
       ],
       [html.text("My CV")],
     ),
