@@ -1,3 +1,4 @@
+import styles
 import sketch/css
 import icons/icon_wrapper
 import icons/icons
@@ -7,7 +8,9 @@ import sketch/lustre/element/html
 
 fn icon(link: String, icon: fn(List(Attribute(msg))) -> Element(msg)) -> Element(msg) {
   html.a_([attribute.href(link)], [icon_wrapper.icon(
-    css.class([]),
+    css.class([
+      css.color(styles.var_fg_color)
+    ]),
     [],
     icon
   )])

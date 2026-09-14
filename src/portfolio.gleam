@@ -179,8 +179,8 @@ fn view(model: Model, stylesheet: StyleSheet) -> Element(Msg) {
   html.div(css.class([]), [], [
     navbar(model),
     html.section(styles.section(), [attribute.id("home")], home.view()),
-    html.section(styles.section(), [attribute.id("projects")], projects.view()),
     html.section(styles.section(), [attribute.id("about")], about.view()),
+    html.section(styles.section(), [attribute.id("projects")], projects.view()),
     html.section(styles.section(), [attribute.id("contact")], contact.view()),
   ])
 }
