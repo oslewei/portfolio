@@ -108,10 +108,10 @@ fn light_mode_button(model: Model) -> Element(Msg) {
 fn navbar(model: Model) -> Element(Msg) {
   let nav_content = [
     html.a(styles.button(), [attribute.href("#home")], [html.text("home")]),
+    html.a(styles.button(), [attribute.href("#about")], [html.text("about")]),
     html.a(styles.button(), [attribute.href("#projects")], [
       html.text("projects"),
     ]),
-    html.a(styles.button(), [attribute.href("#about")], [html.text("about")]),
     html.a(styles.button(), [attribute.href("#contact")], [
       html.text("contact"),
     ]),

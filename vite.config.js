@@ -9,7 +9,6 @@ export default defineConfig({
   input: {
     main: resolve(__dirname, "index.html"),
     raytracing: resolve(__dirname, "raytracing.html"),
-    ai: resolve(__dirname, "ai.html")
   },
   build: {
     outDir: "dist",

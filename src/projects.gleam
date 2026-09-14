@@ -1,3 +1,4 @@
+import gleam/option.{type Option, None, Some}
 import lustre/attribute
 import lustre/element.{type Element}
 import sketch/css
@@ -7,8 +8,8 @@ import styles
 
 fn project_card(
   title: String,
-  showcase_link: String,
   repository: String,
+  showcase_link: Option(String),
 ) -> Element(message) {
   html.div(
     css.class([
@@ -21,12 +22,19 @@ fn project_card(
     [
       html.h1_([], [html.text(title)]),
 
-      html.a(styles.button(), [attribute.href(showcase_link)], [
-        html.text("showcase"),
-      ]),
       html.a(styles.button(), [attribute.href(repository)], [
         html.text("repository"),
       ]),
+      // I dont like this about gleam, that you cant return nothing from a list
+      ..{
+        use link <- option.map(showcase_link)
+        [
+          html.a(styles.button(), [attribute.href(link)], [
+            html.text("showcase"),
+          ]),
+        ]
+      }
+      |> option.unwrap([])
     ],
   )
 }
@@ -34,6 +42,12 @@ fn project_card(
 pub fn view() -> List(Element(msg)) {
   [
     html.h1_([], [html.text("Projects")]),
+    html.p_([], [
+      html.text(
+        "Some personal projects I have worked on, with the goal
+      of trying a different language and skill each time.",
+      ),
+    ]),
     html.div(
       css.class([
         css.display("flex"),
@@ -47,18 +61,18 @@ pub fn view() -> List(Element(msg)) {
       [
         project_card(
           "Raytracing in Zig",
-          "/raytracing",
           "https://github.com/oslewei/zig-rtweekend",
+          Some("/raytracing"),
         ),
         project_card(
           "Deep Learning in C",
-          "/ai",
           "https://github.com/oslewei/c-machine-learning",
+          None,
         ),
         project_card(
           "This Portfolio",
-          "/",
           "https://github.com/oslewei/portfolio",
+          None,
         ),
       ],
     ),
