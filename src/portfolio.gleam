@@ -3,19 +3,20 @@ import contact
 import grille_pain
 import grille_pain/lustre/toast
 import home
-import lucide_lustre
 import lustre
 import lustre/attribute
 import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/event
 import projects
-import sketch
+import sketch.{type StyleSheet}
 import sketch/css
 import sketch/css/length
 import sketch/lustre as sketch_lustre
 import sketch/lustre/element/html
 import styles
+import icons/icons
+import icons/icon_wrapper
 
 import shared.{
   type Model, type Msg, Dark, Light, Model, System, SystemThemeChanged,
@@ -98,8 +99,8 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
 fn light_mode_button(model: Model) -> Element(Msg) {
   html.button(css.class([]), [event.on_click(UserToggledColourMode)], [
     case model.colour_mode {
-      Light | System(False) -> lucide_lustre.moon([])
-      Dark | System(True) -> lucide_lustre.sun([])
+      Light | System(False) -> icon_wrapper.icon(styles.icon(), [], icons.moon)
+      Dark | System(True) -> icon_wrapper.icon(styles.icon(), [], icons.sun)
     },
   ])
 }
@@ -141,7 +142,7 @@ fn navbar(model: Model) -> Element(Msg) {
         case model.hamburger_is_open {
           False ->
             html.button_([event.on_click(UserOpenedHamburger)], [
-              lucide_lustre.hamburger([]),
+              icon_wrapper.icon(styles.icon(), [], icons.hamburger),
             ])
 
           True ->
@@ -173,7 +174,7 @@ fn navbar(model: Model) -> Element(Msg) {
   ])
 }
 
-fn view(model: Model, stylesheet: sketch.StyleSheet) -> Element(Msg) {
+fn view(model: Model, stylesheet: StyleSheet) -> Element(Msg) {
   use <- sketch_lustre.render(stylesheet, [sketch_lustre.node()])
   html.div(css.class([]), [], [
     navbar(model),

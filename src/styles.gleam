@@ -21,6 +21,12 @@ pub const dark_color = "#1A1A18"
 pub const var_bg_color = "var(--bg-color)"
 pub const var_fg_color = "var(--fg-color)"
 
+pub fn icon() -> css.Class {
+  css.class([
+    css.color(var_fg_color)
+  ])
+}
+
 pub fn section() -> css.Class {
   css.class([
     css.display("flex"),
