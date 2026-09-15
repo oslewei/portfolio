@@ -27,7 +27,7 @@ pub const var_ac_color = "var(--accent-color)"
 
 pub fn icon() -> css.Class {
   css.class([
-    css.color(var_fg_color)
+    css.color(var_fg_color),
   ])
 }
 
@@ -51,6 +51,7 @@ pub fn button() -> css.Class {
     css.padding_bottom(length.rem(0.75)),
     css.font_weight("500"),
     css.text_align("center"),
+    css.background_color(var_bg_color),
     // css.transition("background-color 0.2s ease"),
     css.border("1px solid black"),
 
@@ -71,15 +72,8 @@ pub fn global(stylesheet: sketch.StyleSheet) -> sketch.StyleSheet {
       css.scroll_behavior("smooth"),
       css.background_color(light_color),
       
-      css.property("--bg-color", light_color),
-      css.property("--fg-color", dark_color),
+      // the accent colour does not change for now
       css.property("--accent-color", accent_color),
-      
-      css.media(media.dark_theme(), [
-        css.property("--bg-color", dark_color),
-        css.property("--fg-color", light_color),
-      ]),
-
 
       css.background_color(var_bg_color),
       css.color(var_fg_color),
@@ -104,5 +98,16 @@ pub fn global(stylesheet: sketch.StyleSheet) -> sketch.StyleSheet {
       css.property("--bg-color", light_color),
       css.property("--fg-color", dark_color),
     ]),
+  )
+  |> sketch.global(
+    css.global(":root:not([data-theme])", [
+      css.property("--bg-color", light_color),
+      css.property("--fg-color", dark_color),
+      
+      css.media(media.dark_theme(), [
+        css.property("--bg-color", dark_color),
+        css.property("--fg-color", light_color),
+      ]),
+    ])
   )
 }

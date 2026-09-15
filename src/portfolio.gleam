@@ -58,6 +58,7 @@ fn init(_) -> #(Model, Effect(Msg)) {
 }
 
 fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
+  echo model
   case msg {
     UserToggledColourMode -> #(
       Model(..model, colour_mode: case model.colour_mode {
@@ -98,7 +99,7 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
 }
 
 fn light_mode_button(model: Model) -> Element(Msg) {
-  html.button(css.class([]), [event.on_click(UserToggledColourMode)], [
+  html.button(styles.button(), [event.on_click(UserToggledColourMode)], [
     case model.colour_mode {
       Light | System(False) -> icon_wrapper.icon(styles.icon(), [], icons.moon)
       Dark | System(True) -> icon_wrapper.icon(styles.icon(), [], icons.sun)
