@@ -70,13 +70,16 @@ pub fn global(stylesheet: sketch.StyleSheet) -> sketch.StyleSheet {
       css.font_family("\"IBM Plex Sans\", sans-serif"),
       css.scroll_behavior("smooth"),
       css.background_color(light_color),
-      css.media(media.dark_theme(), [
-        css.background_color(dark_color),
-      ]),
-
+      
       css.property("--bg-color", light_color),
       css.property("--fg-color", dark_color),
       css.property("--accent-color", accent_color),
+      
+      css.media(media.dark_theme(), [
+        css.property("--bg-color", dark_color),
+        css.property("--fg-color", light_color),
+      ]),
+
 
       css.background_color(var_bg_color),
       css.color(var_fg_color),
