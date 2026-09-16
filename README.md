@@ -14,6 +14,7 @@ maybe reimplement simple icons in lustre
 
 - using lucide for icons and such
 - sketch_lustre for css in lustre for fun
+- Looking into shaders and threejs for the aesthetic (dithering/marker rendering)
 
 # Pages
 
