@@ -1,3 +1,4 @@
+import gleam/list
 import gleam/option.{type Option, None, Some}
 import lustre/attribute
 import lustre/element.{type Element}
@@ -5,6 +6,17 @@ import sketch/css
 import sketch/css/length
 import sketch/lustre/element/html
 import styles
+
+fn optional_link(showcase_link: Option(String)) -> List(Element(a)) {
+  case showcase_link {
+    Some(link) -> [
+      html.a(styles.button(), [attribute.href(link)], [
+        html.text("showcase"),
+      ]),
+    ]
+    None -> []
+  }
+}
 
 fn project_card(
   title: String,
@@ -19,23 +31,13 @@ fn project_card(
       css.align_items("center"),
     ]),
     [],
-    [
-      html.h1_([], [html.text(title)]),
-
-      html.a(styles.button(), [attribute.href(repository)], [
-        html.text("repository"),
-      ]),
-      // I dont like this about gleam, that you cant return nothing from a list
-      ..{
-        use link <- option.map(showcase_link)
-        [
-          html.a(styles.button(), [attribute.href(link)], [
-            html.text("showcase"),
-          ]),
-        ]
-      }
-      |> option.unwrap([])
-    ],
+      [
+        html.h1_([], [html.text(title)]),
+        html.a(styles.button(), [attribute.href(repository)], [
+          html.text("repository"),
+        ]),
+        ..optional_link(showcase_link)
+      ],
   )
 }
 
