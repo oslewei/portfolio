@@ -1,5 +1,5 @@
 import about
-import browser
+import browser/browser
 import contact
 import grille_pain
 import grille_pain/lustre/toast

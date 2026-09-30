@@ -1,4 +1,3 @@
-import gleam/javascript/promise.{type Promise}
 import lustre/element.{type Element}
 import lustre/event
 import message.{type Msg, UserPressedEmail}

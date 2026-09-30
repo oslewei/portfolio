@@ -1,5 +1,5 @@
 import { loremIpsum } from "https://esm.sh/lorem-ipsum@3";
-import { Result$Ok, Result$Error } from "./gleam.mjs";
+import { Result$Ok, Result$Error } from "../gleam.mjs";
 
 export function onResize(dispatch) {
   window.addEventListener("resize", () => {
