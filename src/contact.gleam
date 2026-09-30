@@ -5,12 +5,6 @@ import message.{type Msg, UserPressedEmail}
 import sketch/css
 import sketch/lustre/element/html
 
-// NOT USED
-@external(javascript, "./browser_ffi.mjs", "readText")
-pub fn read_text() -> Promise(Result(String, String))
-
-@external(javascript, "./browser_ffi.mjs", "writeText")
-pub fn write_text(clip_text: String) -> Promise(Result(Nil, String))
 
 pub fn view() -> List(Element(Msg)) {
   [

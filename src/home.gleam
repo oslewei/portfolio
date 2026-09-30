@@ -1,19 +1,18 @@
-import styles
-import sketch/css
-import icon/icon_wrapper
 import icon/icon
+import icon/icon_wrapper
 import lustre/attribute.{type Attribute}
 import lustre/element.{type Element}
+import sketch/css
 import sketch/lustre/element/html
+import styles
 
-fn icon(link: String, icon: fn(List(Attribute(msg))) -> Element(msg)) -> Element(msg) {
-  html.a_([attribute.href(link)], [icon_wrapper.icon(
-    css.class([
-      css.color(styles.var_fg_color)
-    ]),
-    [],
-    icon
-  )])
+fn icon(
+  link: String,
+  icon: fn(List(Attribute(msg))) -> Element(msg),
+) -> Element(msg) {
+  html.a_([attribute.href(link)], [
+    icon_wrapper.icon(css.class([css.color(styles.var_fg_color)]), [], icon),
+  ])
 }
 
 pub fn view() -> List(Element(a)) {

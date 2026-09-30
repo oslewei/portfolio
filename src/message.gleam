@@ -1,4 +1,3 @@
-
 pub type Msg {
   UserResizedWindow(width: Int)
   UserToggledColourMode

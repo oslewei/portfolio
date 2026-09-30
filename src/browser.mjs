@@ -3,17 +3,17 @@ import { Result$Ok, Result$Error } from "./gleam.mjs";
 
 export function onResize(dispatch) {
   window.addEventListener("resize", () => {
-    dispatch(window.innerWidth)
-  })
+    dispatch(window.innerWidth);
+  });
 }
 
 export function getWindowWidth() {
-  return window.innerWidth
+  return window.innerWidth;
 }
 
 /// Lorem ipsium generator
 export function loremIpsumGleam(count, units) {
-  return loremIpsum({count, units})
+  return loremIpsum({ count, units });
 }
 
 export async function readText() {
@@ -33,7 +33,7 @@ export async function writeText(clipText) {
 }
 
 export function prefersDark() {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
 export function onSchemeChange(callback) {
@@ -42,5 +42,5 @@ export function onSchemeChange(callback) {
 }
 
 export function setAttribute(attrib, state) {
-  document.documentElement.setAttribute(attrib, state)
+  document.documentElement.setAttribute(attrib, state);
 }

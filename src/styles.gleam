@@ -6,14 +6,6 @@ import sketch/css
 import sketch/css/length
 import sketch/css/media
 
-@external(javascript, "./browser_ffi.mjs", "setAttribute")
-pub fn set_attribute(attrib: String, state: String) -> Nil
-
-@external(javascript, "./browser_ffi.mjs", "prefersDark")
-pub fn prefers_dark() -> Bool
-
-@external(javascript, "./browser_ffi.mjs", "onSchemeChange")
-pub fn on_scheme_change(callback: fn(Bool) -> Nil) -> Nil
 
 // private colour values
 const light_color = "#FAF9F6"
@@ -35,7 +27,6 @@ pub fn section() -> css.Class {
   css.class([
     css.display("flex"),
     css.flex_direction("column"),
-    css.justify_content("center"),
     css.align_items("center"),
     css.border("solid 1px black"),
     css.height(length.vh(100)),

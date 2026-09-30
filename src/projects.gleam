@@ -1,4 +1,3 @@
-import gleam/list
 import gleam/option.{type Option, None, Some}
 import lustre/attribute
 import lustre/element.{type Element}
@@ -31,13 +30,13 @@ fn project_card(
       css.align_items("center"),
     ]),
     [],
-      [
-        html.h1_([], [html.text(title)]),
-        html.a(styles.button(), [attribute.href(repository)], [
-          html.text("repository"),
-        ]),
-        ..optional_link(showcase_link)
-      ],
+    [
+      html.h1_([], [html.text(title)]),
+      html.a(styles.button(), [attribute.href(repository)], [
+        html.text("repository"),
+      ]),
+      ..optional_link(showcase_link)
+    ],
   )
 }
 

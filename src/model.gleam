@@ -1,4 +1,3 @@
-
 pub type ColourMode {
   // lazy but true is dark and false is light
   System(is_dark: Bool)
@@ -7,13 +6,10 @@ pub type ColourMode {
 }
 
 pub type Layout {
-    Desktop
-    Mobile(is_hamburger_open: Bool)
+  Desktop
+  Mobile(is_hamburger_open: Bool)
 }
 
 pub type Model {
-  Model(
-    layout: Layout,
-    colour_mode: ColourMode,
-  )
+  Model(layout: Layout, colour_mode: ColourMode)
 }
