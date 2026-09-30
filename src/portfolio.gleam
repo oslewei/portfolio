@@ -6,29 +6,25 @@ import home
 import lustre
 import lustre/attribute
 import lustre/effect.{type Effect}
-import lustre/element.{type Element}
 import lustre/event
 import projects
 import sketch.{type StyleSheet}
 import sketch/css
 import sketch/css/length
 import sketch/lustre as sketch_lustre
+import sketch/lustre/element.{type Element}
 import sketch/lustre/element/html
 import styles
-import icons/icons
-import icons/icon_wrapper
+import icon/icon
+import icon/icon_wrapper
 
-// Needs to be fixed, maybe split it out
-import shared.{
-  type Model, type Msg, Dark, Light, Model, System, SystemThemeChanged,
-  UserClosedHamburger, UserOpenedHamburger, UserPressedEmail, UserResizedWindow,
-  UserToggledColourMode,
-}
+import message.{type Msg}
+import model.{type Model}
 
 fn watch_scheme() -> Effect(Msg) {
   effect.from(fn(dispatch) {
     use is_dark <- styles.on_scheme_change
-    dispatch(SystemThemeChanged(is_dark))
+    dispatch(message.SystemThemeChanged(is_dark))
   })
 }
 
@@ -39,19 +35,20 @@ fn on_resize(dispatch: fn(Int) -> Nil) -> Nil
 fn get_window_width() -> Int
 
 fn init(_) -> #(Model, Effect(Msg)) {
-  let width = get_window_width()
   #(
-    // Change to user preference? 
-    Model(
-      window_width: width,
-      hamburger_is_open: False,
-      colour_mode: System(styles.prefers_dark()),
+    model.Model(
+        colour_mode: model.System(styles.prefers_dark()),
+        layout: case get_window_width() {
+            // magic value for now
+            w if w <= 750 -> model.Mobile(False)
+            _ -> model.Desktop
+        }
     ),
     effect.batch([
       watch_scheme(),
       effect.from(fn(dispatch) {
         use w <- on_resize
-        dispatch(UserResizedWindow(w))
+        dispatch(message.UserResizedWindow(w))
       }),
     ]),
   )
@@ -60,49 +57,54 @@ fn init(_) -> #(Model, Effect(Msg)) {
 fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
   echo model
   case msg {
-    UserToggledColourMode -> #(
-      Model(..model, colour_mode: case model.colour_mode {
-        Light | System(False) -> {
+      message.UserToggledColourMode -> #(
+      model.Model(..model, colour_mode: case model.colour_mode {
+          model.Light | model.System(False) -> {
           styles.set_attribute("data-theme", "dark")
-          Dark
+          model.Dark
         }
-        Dark | System(True) -> {
+        model.Dark | model.System(True) -> {
           styles.set_attribute("data-theme", "light")
-          Light
+          model.Light
         }
       }),
       effect.none(),
     )
-    SystemThemeChanged(is_dark:) -> #(
-      Model(..model, colour_mode: case is_dark {
-        True -> Dark
-        False -> Light
+    message.SystemThemeChanged(is_dark:) -> #(
+      model.Model(..model, colour_mode: case is_dark {
+        True -> model.Dark
+        False -> model.Light
       }),
       effect.none(),
     )
-    UserPressedEmail -> {
+    message.UserPressedEmail -> {
       contact.write_text("oslewei.proton.me")
       #(model, toast.toast("Copied Email!"))
     }
-    UserResizedWindow(window_width) -> {
-      #(Model(..model, window_width:), effect.none())
+    message.UserResizedWindow(window_width) -> {
+    #(model.Model(..model, layout: case window_width {
+      w if w <= 750 -> model.Mobile(False)
+      _ -> model.Desktop
+    }), effect.none())
     }
-    UserOpenedHamburger -> #(
-      Model(..model, hamburger_is_open: True),
+    // we are assuming that these messages only work when in mobile
+    // this may be a strong assumptio
+    message.UserOpenedHamburger -> #(
+        model.Model(..model, layout: model.Mobile(True)),
       effect.none(),
     )
-    UserClosedHamburger -> #(
-      Model(..model, hamburger_is_open: False),
+    message.UserClosedHamburger -> #(
+        model.Model(..model, layout: model.Mobile(False)),
       effect.none(),
     )
   }
 }
 
 fn light_mode_button(model: Model) -> Element(Msg) {
-  html.button(styles.button(), [event.on_click(UserToggledColourMode)], [
+    html.button(styles.button(), [event.on_click(message.UserToggledColourMode)], [
     case model.colour_mode {
-      Light | System(False) -> icon_wrapper.icon(styles.icon(), [], icons.moon)
-      Dark | System(True) -> icon_wrapper.icon(styles.icon(), [], icons.sun)
+        model.Light | model.System(False) -> icon_wrapper.icon(styles.icon(), [], icon.moon)
+      model.Dark | model.System(True) -> icon_wrapper.icon(styles.icon(), [], icon.sun)
     },
   ])
 }
@@ -127,8 +129,8 @@ fn navbar(model: Model) -> Element(Msg) {
     css.border_bottom("solid 1px black"),
     css.background(styles.var_bg_color),
   ]), [], [
-    case model.window_width > 500 {
-      True ->
+      case model.layout {
+          model.Desktop ->
         html.div(
           css.class([
             css.width(length.vw(100)),
@@ -140,11 +142,11 @@ fn navbar(model: Model) -> Element(Msg) {
           [],
           nav_content,
         )
-      False ->
-        case model.hamburger_is_open {
+      model.Mobile(hamburger) ->
+        case hamburger {
           False ->
-            html.button_([event.on_click(UserOpenedHamburger)], [
-              icon_wrapper.icon(styles.icon(), [], icons.hamburger),
+            html.button_([event.on_click(message.UserOpenedHamburger)], [
+              icon_wrapper.icon(styles.icon(), [], icon.hamburger),
             ])
 
           True ->
@@ -157,7 +159,7 @@ fn navbar(model: Model) -> Element(Msg) {
                   css.background("transparent"),
                   css.z_index(10),
                 ]),
-                [event.on_click(UserClosedHamburger)],
+                [event.on_click(message.UserClosedHamburger)],
                 [],
               ),
               html.div(

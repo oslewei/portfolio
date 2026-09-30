@@ -1,7 +1,7 @@
 import styles
 import sketch/css
-import icons/icon_wrapper
-import icons/icons
+import icon/icon_wrapper
+import icon/icon
 import lustre/attribute.{type Attribute}
 import lustre/element.{type Element}
 import sketch/lustre/element/html
@@ -21,8 +21,8 @@ pub fn view() -> List(Element(a)) {
     html.h1_([], [html.text("Oscar Weimann")]),
     html.h2_([], [html.text("Welcome to my tech portfolio!")]),
     html.div_([], [
-      icon("https://github.com/oslewei", icons.github),
-      icon("https://tangled.org/os1to.tngl.sh", icons.tangled),
+      icon("https://github.com/oslewei", icon.github),
+      icon("https://tangled.org/os1to.tngl.sh", icon.tangled),
     ]),
   ]
 }
