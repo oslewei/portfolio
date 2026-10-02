@@ -45,6 +45,7 @@ fn init(_) -> #(Model, Effect(Msg)) {
         use w <- browser.on_resize
         dispatch(message.UserResizedWindow(w))
       }),
+      toast.custom(toast.sticky(toast.options()), "This Portfolio is under construction!")
     ]),
   )
 }
