@@ -185,10 +185,16 @@ fn view(model: Model, stylesheet: StyleSheet) -> Element(Msg) {
   use <- sketch_lustre.render(stylesheet, [sketch_lustre.node()])
   html.div(css.class([]), [], [
     navbar(model),
-    html.section(styles.section(), [attribute.id("home")], home.view()),
-    html.section(styles.section(), [attribute.id("about")], about.view()),
-    html.section(styles.section(), [attribute.id("projects")], projects.view()),
-    html.section(styles.section(), [attribute.id("contact")], contact.view()),
+    html.main_([], [
+      html.section(styles.section(), [attribute.id("home")], [home.view()]),
+      html.section(styles.section(), [attribute.id("about")], [about.view()]),
+      html.section(
+        styles.section(),
+        [attribute.id("projects")],
+        [projects.view()],
+      ),
+      html.section(styles.section(), [attribute.id("contact")], [contact.view()]),
+    ]),
   ])
 }
 

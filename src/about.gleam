@@ -3,8 +3,8 @@ import lustre/element.{type Element}
 import sketch/lustre/element/html
 import styles
 
-pub fn view() -> List(Element(message)) {
-  [
+pub fn view() -> Element(message) {
+  element.fragment([
     html.h1_([], [html.text("About")]),
     html.p_([], [
       html.text(
@@ -22,5 +22,5 @@ pub fn view() -> List(Element(message)) {
       ],
       [html.text("My CV")],
     ),
-  ]
+  ])
 }

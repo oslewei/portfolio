@@ -6,15 +6,18 @@ import sketch/css
 import sketch/css/length
 import sketch/css/media
 
-
 // private colour values
 const light_color = "#FAF9F6"
+
 const dark_color = "#1A1A18"
+
 const accent_color = "#8d1952"
 
 // publically accessable variables
 pub const var_bg_color = "var(--bg-color)"
+
 pub const var_fg_color = "var(--fg-color)"
+
 pub const var_ac_color = "var(--accent-color)"
 
 pub fn icon() -> css.Class {
@@ -29,7 +32,7 @@ pub fn section() -> css.Class {
     css.flex_direction("column"),
     css.align_items("center"),
     css.border("solid 1px black"),
-    css.height(length.vh(100)),
+    css.padding(length.px(80)),
   ])
 }
 
@@ -62,7 +65,7 @@ pub fn global(stylesheet: sketch.StyleSheet) -> sketch.StyleSheet {
       css.font_family("\"IBM Plex Sans\", sans-serif"),
       css.scroll_behavior("smooth"),
       css.background_color(light_color),
-      
+
       // the accent colour does not change for now
       css.property("--accent-color", accent_color),
 
@@ -94,11 +97,11 @@ pub fn global(stylesheet: sketch.StyleSheet) -> sketch.StyleSheet {
     css.global(":root:not([data-theme])", [
       css.property("--bg-color", light_color),
       css.property("--fg-color", dark_color),
-      
+
       css.media(media.dark_theme(), [
         css.property("--bg-color", dark_color),
         css.property("--fg-color", light_color),
       ]),
-    ])
+    ]),
   )
 }

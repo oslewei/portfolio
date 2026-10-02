@@ -1,3 +1,4 @@
+import sketch/css/length
 import icon/icon
 import icon/icon_wrapper
 import lustre/attribute.{type Attribute}
@@ -15,13 +16,15 @@ fn icon(
   ])
 }
 
-pub fn view() -> List(Element(a)) {
-  [
+pub fn view() -> Element(a) {
+  html.div(css.class([
+    css.height(length.vh(100))
+  ]), [], [
     html.h1_([], [html.text("Oscar Weimann")]),
     html.h2_([], [html.text("Welcome to my tech portfolio!")]),
     html.div_([], [
       icon("https://github.com/oslewei", icon.github),
       icon("https://tangled.org/os1to.tngl.sh", icon.tangled),
     ]),
-  ]
+  ])
 }

@@ -4,9 +4,8 @@ import message.{type Msg, UserPressedEmail}
 import sketch/css
 import sketch/lustre/element/html
 
-
-pub fn view() -> List(Element(Msg)) {
-  [
+pub fn view() -> Element(Msg) {
+  element.fragment([
     html.h1_([], [html.text("Contact")]),
     html.p_([], [
       html.text("Email: "),
@@ -18,5 +17,5 @@ pub fn view() -> List(Element(Msg)) {
         ],
       ),
     ]),
-  ]
+  ])
 }

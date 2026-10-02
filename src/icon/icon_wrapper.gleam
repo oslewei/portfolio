@@ -9,15 +9,14 @@ pub fn icon(
   icon: fn(List(Attribute(msg))) -> Element(msg),
 ) -> Element(msg) {
   icon([
-    attribute.class(
-      element.class_name(
-        css.class([
-          css.width(length.px(20)),
-          css.height(length.px(20)),
-          css.compose(class),
-        ]),
-      ),
-    ),
+    attribute.class(element.class_name(
+      // default css that will be overwritten
+      css.class([
+        css.width(length.px(20)),
+        css.height(length.px(20)),
+        css.compose(class),
+      ]),
+    )),
     ..attributes
   ])
 }
